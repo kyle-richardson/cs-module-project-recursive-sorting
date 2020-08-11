@@ -25,27 +25,23 @@ def binary_search(arr, target, low, high):
 # You can implement this function either recursively
 # or iteratively
 def agnostic_binary_search(arr, target):
-    print(f'looking for {target} inside {arr}')
-    sortedArr = merge_sort(arr)
-    print(f'sorted: {sortedArr}')
-    low = 0
-    high = len(sortedArr) - 1
-    mid = (low+high) // 2
-    if target == sortedArr[mid]:
-        return mid
-    if len(sortedArr) == 1:
-        return -1
-    elif target < sortedArr[mid]:
-        return agnostic_binary_search(sortedArr[:mid], target)
-    else:
-        nextArr = []
-        if len(sortedArr) == 2:
-            nextArr = sortedArr[1:]
+    first = 0
+    last = len(arr) - 1
+    is_ascending = True
+    if arr[1] < arr[0]:
+        is_ascending = False
+    while first <= last:
+        mid = (first+last) // 2
+        if target == arr[mid]:
+            return mid
+        elif target < arr[mid]:
+            if is_ascending:
+                last = mid - 1
+            else:
+                first = mid + 1
         else:
-            nextArr = sortedArr[mid:]
-        right_side = agnostic_binary_search(nextArr, target)
-        if right_side >= 0:
-            print(mid + right_side)
-            return mid + right_side
-        else:
-            return -1
+            if is_ascending:
+                first = mid + 1
+            else:
+                last = mid - 1
+    return -1
